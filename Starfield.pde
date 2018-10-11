@@ -1,4 +1,4 @@
-Particle [] particles = new Particle[3000];
+Particle [] particles = new Particle[4000];
 void setup()
 {
 	size(500, 500);
@@ -8,6 +8,11 @@ void setup()
 	}
 	particles[0] = new OddballParticle();
 	particles[1] = new JumboParticle();
+	for (int i = 0; i < 30; ++i) {
+		for (int n = 0; n < particles.length; ++n) {
+			particles[n].move();
+		}
+	}
 }
 void draw()
 {
@@ -15,7 +20,23 @@ void draw()
 	for (int i = 0; i < particles.length; ++i) {		
 		particles[i].show();
 		particles[i].move();
+	//	particles[i].show();
+		particles[i].move();
 	}
+
+}
+void mousePressed() {
+	for (int i = 0; i < particles.length; i++) {
+		particles[i] = new NormalParticle();
+	}
+	particles[0] = new OddballParticle();
+	particles[1] = new JumboParticle();
+	for (int i = 0; i < 30; ++i) {
+		for (int n = 0; n < particles.length; ++n) {
+			particles[n].move();
+		}
+	}
+	redraw();
 }
 interface Particle
 {
@@ -25,20 +46,30 @@ interface Particle
 class NormalParticle implements Particle
 {
 	int myColor;
-	double myX, myY, mySpeed, myAngle;
+	double myX, myY, mySpeed, myAngle, myDistance, mySize;
 	NormalParticle(){
 		myColor = color(255);
 		myX = myY = 250;
 		myAngle = Math.random()*2*Math.PI;
 		mySpeed = Math.random()*10;
+		myDistance = mySize = 0;
 	}
 	public void move(){
 		myX += (Math.cos(myAngle) * mySpeed);
 		myY += (Math.sin(myAngle) * mySpeed);
+		myDistance = sqrt(sq((float)myX - 250) + sq((float)myY - 250));
+		mySize = myDistance/50;
 	}
 	public void show(){
 		fill(myColor);
-		ellipse((float)myX, (float)myY, 2, 2);
+		ellipse((float)myX, (float)myY, (float)mySize, (float)mySize);
+	}
+}
+class JumboParticle extends NormalParticle
+{
+	public void show(){
+		fill(255, 0, 0);
+		ellipse((float)myX,(float)myY, (float)mySize*5, (float)mySize*5);
 	}
 }
 class OddballParticle implements Particle
@@ -57,12 +88,5 @@ class OddballParticle implements Particle
 	public void show(){
 		fill(myColor);
 		rect((float)myX, (float)myY, 10, 10);
-	}
-}
-class JumboParticle extends NormalParticle
-{
-	public void show(){
-		fill(255, 0, 0);
-		ellipse((float)myX,(float)myY, 20, 20);
 	}
 }
