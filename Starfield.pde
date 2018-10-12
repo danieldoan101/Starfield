@@ -1,4 +1,5 @@
 Particle [] particles = new Particle[4000];
+int counter = 0;
 void setup()
 {
 	size(500, 500);
@@ -16,14 +17,26 @@ void setup()
 }
 void draw()
 {
+	counter++;
 	background(0);
 	for (int i = 0; i < particles.length; ++i) {		
 		particles[i].show();
 		particles[i].move();
-	//	particles[i].show();
 		particles[i].move();
 	}
-
+	if(counter == 10){
+		for (int i = 0; i < particles.length; i++) {
+			particles[i] = new NormalParticle();
+		}
+		particles[0] = new OddballParticle();
+		particles[1] = new JumboParticle();
+		for (int i = 0; i < 30; ++i) {
+			for (int n = 0; n < particles.length; ++n) {
+				particles[n].move();
+			}
+		}
+		counter = 0;
+	}
 }
 void mousePressed() {
 	for (int i = 0; i < particles.length; i++) {
@@ -51,7 +64,7 @@ class NormalParticle implements Particle
 		myColor = color(255);
 		myX = myY = 250;
 		myAngle = Math.random()*2*Math.PI;
-		mySpeed = Math.random()*10;
+		mySpeed = Math.random()*30;
 		myDistance = mySize = 0;
 	}
 	public void move(){
@@ -67,6 +80,13 @@ class NormalParticle implements Particle
 }
 class JumboParticle extends NormalParticle
 {
+	JumboParticle(){
+		myColor = color(255);
+		myX = myY = 250;
+		myAngle = Math.random()*2*Math.PI;
+		mySpeed = 5;
+		myDistance = mySize = 0;
+	}
 	public void show(){
 		fill(255, 0, 0);
 		ellipse((float)myX,(float)myY, (float)mySize*5, (float)mySize*5);
