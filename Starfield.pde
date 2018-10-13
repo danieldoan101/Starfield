@@ -38,19 +38,6 @@ void draw()
 		counter = 0;
 	}
 }
-void mousePressed() {
-	for (int i = 0; i < particles.length; i++) {
-		particles[i] = new NormalParticle();
-	}
-	particles[0] = new OddballParticle();
-	particles[1] = new JumboParticle();
-	for (int i = 0; i < 30; ++i) {
-		for (int n = 0; n < particles.length; ++n) {
-			particles[n].move();
-		}
-	}
-	redraw();
-}
 interface Particle
 {
 	public void move();
